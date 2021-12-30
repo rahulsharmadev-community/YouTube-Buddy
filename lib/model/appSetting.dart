@@ -24,6 +24,7 @@ class AppSetting extends ChangeNotifier {
       android: AndroidInAppWebViewOptions(
         displayZoomControls: false,
         builtInZoomControls: false,
+
         forceDark: _isDarkMode
             ? AndroidForceDark.FORCE_DARK_ON
             : AndroidForceDark.FORCE_DARK_OFF,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import '../model/appSetting.dart';
-import 'videoPlayer_screen.dart';
+import 'fullscreenVideo.dart';
 
 class YouTubeWebScreen extends StatefulWidget {
   const YouTubeWebScreen({Key? key}) : super(key: key);
@@ -34,11 +34,9 @@ class _YouTubeWebScreenState extends State<YouTubeWebScreen> {
             initialOptions: appSetting.webOptions,
             onTitleChanged: (controller, progress) async {
               var uri = (await controller.getUrl()).toString();
-              if (appSetting.isAdsEnable &&
-                  uri.contains('https://m.youtube.com/watch')) {
-                var videoid = uri.split('=')[uri.split('=').length - 1];
+              if (appSetting.isAdsEnable && uri.contains('watch?v=')) {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (builder) => FullScreenVideo(videoid)));
+                    builder: (builder) => FullScreenVideo(uri)));
                 await appSetting.webController!.goBack();
               }
             },
@@ -49,6 +47,7 @@ class _YouTubeWebScreenState extends State<YouTubeWebScreen> {
             },
             shouldOverrideUrlLoading: (controller, navigationAction) async {
               var uri = navigationAction.request.url!;
+              
               if (!["youtube"].contains(uri.scheme)) {
                 // and cancel the request
                 return NavigationActionPolicy.CANCEL;
