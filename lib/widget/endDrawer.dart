@@ -38,6 +38,19 @@ class EndDrawer extends StatelessWidget {
               value: appSetting.isAdsEnable,
               onChanged: (value) => appSetting.adsSwitch()),
         ),
+         ListTile(
+          leading: Image.asset(
+            'assets/icons/multiVerse.png',
+            height: 30,
+            color: appSetting.isMultiVerse
+                ? Colors.red.shade800
+                : Theme.of(context).hintColor,
+          ),
+          title: const Text('MultiVerse'),
+          trailing: Switch(
+              value: appSetting.isMultiVerse,
+              onChanged: (value) => appSetting.multiVerseSwitch()),
+        ),
         ListTile(
             leading: Icon(
               Icons.dark_mode,

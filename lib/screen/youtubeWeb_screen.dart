@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
+import 'package:youtubebuddy/screen/multiVerseScreen.dart';
 import '../model/appSetting.dart';
 import 'fullscreenVideo.dart';
 
@@ -14,6 +16,20 @@ class YouTubeWebScreen extends StatefulWidget {
 
 class _YouTubeWebScreenState extends State<YouTubeWebScreen> {
   final Uri webDomain = Uri.parse('https://m.youtube.com/');
+  bool isPlay = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Wakelock.enable();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Wakelock.disable();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +55,12 @@ class _YouTubeWebScreenState extends State<YouTubeWebScreen> {
                     builder: (builder) => FullScreenVideo(uri)));
                 await appSetting.webController!.goBack();
               }
+
+              if (appSetting.isMultiVerse && uri.contains('watch?v=')) {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (builder) => MultiVerseScreen(uri)));
+                await appSetting.webController!.goBack();
+              }
             },
             onWebViewCreated: (onWebViewCreated) async {
               setState(() {
@@ -47,7 +69,7 @@ class _YouTubeWebScreenState extends State<YouTubeWebScreen> {
             },
             shouldOverrideUrlLoading: (controller, navigationAction) async {
               var uri = navigationAction.request.url!;
-              
+
               if (!["youtube"].contains(uri.scheme)) {
                 // and cancel the request
                 return NavigationActionPolicy.CANCEL;
@@ -73,7 +95,7 @@ class _YouTubeWebScreenState extends State<YouTubeWebScreen> {
                 icon: const Icon(Icons.settings),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

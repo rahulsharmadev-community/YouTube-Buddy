@@ -7,6 +7,7 @@ class AppSharePreference {
   static const _preferencesClearCache = 'ClearCache';
   static const _preferencesIsAdsEnable = 'IsAdsEnable';
   static const _preferencesIncognito = 'Incognito';
+  static const _preferencesMultiVerse = 'MultiVerse';
   static init() async {
     _preferences = await SharedPreferences.getInstance();
   }
@@ -23,6 +24,9 @@ class AppSharePreference {
   static Future<void> setIncognito(bool value) async =>
       await _preferences.setBool(_preferencesIncognito, value);
 
+  static Future<void> setMultiVerse(bool value) async =>
+      await _preferences.setBool(_preferencesMultiVerse, value);
+
   static bool get getIsDarkMode =>
       _preferences.getBool(_preferencesIsDarkMode) ?? false;
 
@@ -34,4 +38,7 @@ class AppSharePreference {
 
   static bool get getIncognito =>
       _preferences.getBool(_preferencesIncognito) ?? false;
+
+  static bool get getMultiVerse =>
+      _preferences.getBool(_preferencesMultiVerse) ?? false;
 }

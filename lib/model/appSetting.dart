@@ -7,12 +7,14 @@ class AppSetting extends ChangeNotifier {
   late bool _clearCache;
   late bool _isAdsEnable;
   late bool _incognito;
+  late bool _isMultiVerse;
   InAppWebViewController? webController;
 
   bool get getClearCache => _clearCache;
   bool get isAdsEnable => _isAdsEnable;
   bool get incognito => _incognito;
   bool get isDarkMode => _isDarkMode;
+  bool get isMultiVerse => _isMultiVerse;
 
   InAppWebViewGroupOptions get webOptions => InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -24,7 +26,6 @@ class AppSetting extends ChangeNotifier {
       android: AndroidInAppWebViewOptions(
         displayZoomControls: false,
         builtInZoomControls: false,
-
         forceDark: _isDarkMode
             ? AndroidForceDark.FORCE_DARK_ON
             : AndroidForceDark.FORCE_DARK_OFF,
@@ -35,11 +36,26 @@ class AppSetting extends ChangeNotifier {
     _clearCache = AppSharePreference.getClearCache;
     _isAdsEnable = AppSharePreference.getIsAds;
     _incognito = AppSharePreference.getIncognito;
+    _isMultiVerse=AppSharePreference.getMultiVerse;
     notifyListeners();
   }
   adsSwitch() {
     _isAdsEnable = !_isAdsEnable;
+    if (_isAdsEnable) {
+      _isMultiVerse = false;
+      AppSharePreference.setMultiVerse(_isMultiVerse);
+    }
     AppSharePreference.setIsAds(_isAdsEnable);
+    notifyListeners();
+  }
+
+  multiVerseSwitch() {
+    _isMultiVerse = !_isMultiVerse;
+    if (_isMultiVerse) {
+      _isAdsEnable = false;
+      AppSharePreference.setIsAds(_isAdsEnable);
+    }
+    AppSharePreference.setMultiVerse(_isMultiVerse);
     notifyListeners();
   }
 
